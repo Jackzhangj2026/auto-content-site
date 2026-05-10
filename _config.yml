@@ -1,0 +1,50 @@
+# Site settings
+title: AI产品观察
+tagline: AI时代的产品思维、工具评测与行业洞察
+description: >-
+  聚焦AI时代的产品管理、工具评测与行业深度分析。
+  每日更新，为你带来最新最实用的内容。
+url: "https://your-username.github.io"
+baseurl: ""
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: /:year/:month/:day/:title/
+paginate: 10
+paginate_path: "/page:num/"
+
+# Theme settings
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-paginate
+  - jekyll-sitemap
+
+# Author settings
+author: AI产品观察团队
+email: your-email@example.com
+twitter_username: your_twitter
+github_username: your_github
+
+# Default frontmatter
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      comments: true
+      author: AI产品观察
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - content_generator.py
+  - keywords.txt
+  - README.md
+  - .github/
+  - venv/
+  - __pycache__/

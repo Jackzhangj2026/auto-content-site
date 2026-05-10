@@ -1,0 +1,65 @@
+---
+layout: default
+---
+<div class="home">
+  <h1>{{ site.title }}</h1>
+  <p class="description">{{ site.description }}</p>
+
+  <!-- 主页广告位 -->
+  <!--
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
+       data-ad-slot="YOUR_AD_SLOT"
+       data-ad-format="auto"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  -->
+
+  <!-- 分类导航 -->
+  <div class="category-list">
+    <a href="#" class="category-tag">AI工具</a>
+    <a href="#" class="category-tag">产品管理</a>
+    <a href="#" class="category-tag">电商运营</a>
+    <a href="#" class="category-tag">行业洞察</a>
+  </div>
+
+  <h2>最新文章</h2>
+
+  {% if paginator %}
+    {% assign posts = paginator.posts %}
+  {% else %}
+    {% assign posts = site.posts %}
+  {% endif %}
+
+  <ul class="post-list">
+    {% for post in posts %}
+    <li>
+      <h2>
+        <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
+      </h2>
+      <p class="post-meta">
+        <time>{{ post.date | date: "%Y-%m-%d" }}</time>
+        {% if post.categories and post.categories.size > 0 %}
+          · {{ post.categories | join: ", " }}
+        {% endif %}
+      </p>
+      {% if post.description %}
+        <p class="post-excerpt">{{ post.description | truncate: 200 }}</p>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+
+  <!-- 分页 -->
+  {% if paginator.total_pages > 1 %}
+  <div class="pagination">
+    {% if paginator.previous_page %}
+      <a href="{{ paginator.previous_page_path | relative_url }}">← 上一页</a>
+    {% endif %}
+    <em>{{ paginator.page }} / {{ paginator.total_pages }}</em>
+    {% if paginator.next_page %}
+      <a href="{{ paginator.next_page_path | relative_url }}">下一页 →</a>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
