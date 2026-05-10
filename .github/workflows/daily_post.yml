@@ -6,15 +6,27 @@ on:
   schedule:
     # 北京时间每天早上8点运行 (UTC 0:00)
     - cron: '0 0 * * *'
-  workflow_dispatch:  # 支持手动触发
+  workflow_dispatch:
   push:
-    branches: [main]  # 手动推送时也触发部署
+    branches: [main]
+
+# 允许 Pages 部署
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# 只保留一次部署
+concurrency:
+  group: pages
+  cancel-in-progress: true
 
 jobs:
-  generate-and-deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: 检出代码
@@ -24,10 +36,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
-      - name: 安装依赖
-        run: |
-          python -m pip install --upgrade pip
 
       - name: 生成今日文章
         env:
@@ -42,3 +50,16 @@ jobs:
           git add _posts/
           git diff --staged --quiet || git commit -m "每日自动更新：$(date +'%Y-%m-%d') 新文章"
           git push
+
+      - name: 构建静态页面
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+
+      - name: 上传构建产物
+        uses: actions/upload-pages-artifact@v3
+
+      - name: 部署到 Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
