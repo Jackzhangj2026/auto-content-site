@@ -4,8 +4,8 @@ tagline: AI时代的产品思维、工具评测与行业洞察
 description: >-
   聚焦AI时代的产品管理、工具评测与行业深度分析。
   每日更新，为你带来最新最实用的内容。
-url: "https://your-username.github.io"
-baseurl: ""
+url: "https://jackzhangj2026.github.io"
+baseurl: "/auto-content-site"
 
 # Build settings
 markdown: kramdown

@@ -11,10 +11,10 @@ title: 首页
 
 ## 热门分类
 
-- [AI工具评测](/category/ai-tools/) — 最新AI产品实战测评
-- [产品管理](/category/product/) — PM技能提升指南
-- [电商运营](/category/ecommerce/) — 电商趋势与运营策略
-- [行业洞察](/category/insights/) — 深度行业分析
+- [AI工具评测]({{ '/category/ai-tools/' | relative_url }}) — 最新AI产品实战测评
+- [产品管理]({{ '/category/product/' | relative_url }}) — PM技能提升指南
+- [电商运营]({{ '/category/ecommerce/' | relative_url }}) — 电商趋势与运营策略
+- [行业洞察]({{ '/category/insights/' | relative_url }}) — 深度行业分析
 
 ## 最新文章
 
