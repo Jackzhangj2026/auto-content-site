@@ -100,11 +100,12 @@ DEFAULT_KEYWORDS_EN = [
     "Digital product design principles",
 ]
 
+
 def get_keywords():
     """从关键词文件读取话题，如果没有则使用默认值"""
     if os.path.exists(KEYWORDS_FILE):
         with open(KEYWORDS_FILE, "r", encoding="utf-8") as f:
-            keywords = [line.strip() for line in f if line.strip()]
+            keywords = [line.strip() for line in f if line.strip() and not line.strip().startswith("#")]
         if keywords:
             return keywords
 
@@ -329,7 +330,7 @@ title: {title}
 description: {description}
 date: {today}
 category: {category}
-tags: {tags}
+tags: {keyword}
 ---
 
 {body}"""
@@ -353,21 +354,13 @@ def parse_article_output(content, keyword, publish_date):
             tags = keyword
 
             for line in frontmatter.strip().split("\n"):
-                if line.startswith("标题:"):
+                if line.startswith("标题:") or line.startswith("title:"):
                     title = line.split(":", 1)[1].strip()
-                elif line.startswith("title:"):
-                    title = line.split(":", 1)[1].strip()
-                elif line.startswith("描述:"):
+                elif line.startswith("描述:") or line.startswith("description:"):
                     description = line.split(":", 1)[1].strip()
-                elif line.startswith("description:"):
-                    description = line.split(":", 1)[1].strip()
-                elif line.startswith("分类:"):
+                elif line.startswith("分类:") or line.startswith("category:"):
                     category = line.split(":", 1)[1].strip()
-                elif line.startswith("category:"):
-                    category = line.split(":", 1)[1].strip()
-                elif line.startswith("标签:"):
-                    tags = line.split(":", 1)[1].strip()
-                elif line.startswith("tags:"):
+                elif line.startswith("标签:") or line.startswith("tags:"):
                     tags = line.split(":", 1)[1].strip()
 
             if not title:
@@ -406,8 +399,11 @@ def get_filename(title, publish_date):
     date_str = publish_date.strftime("%Y-%m-%d")
     # 简化标题作为slug
     slug = title.lower().strip()
-    # 只保留字母、数字、中文字符和短横
-    slug = "".join(c if c.isalnum() or c in "-一-龥" else "-" for c in slug)
+    # 只保留字母、数字、中文字符，其他替换为短横
+    slug = "".join(c if c.isalnum() or '一' <= c <= '鿿' else "-" for c in slug)
+    # 合并连续的短横为单个，避免文件名中出现 ---
+    while "--" in slug:
+        slug = slug.replace("--", "-")
     slug = slug[:50].strip("-")
     if not slug:
         slug = hashlib.md5(title.encode()).hexdigest()[:8]
